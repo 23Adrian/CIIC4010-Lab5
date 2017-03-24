@@ -10,14 +10,37 @@ public class MyPanel extends JPanel {
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
-	private static final int TOTAL_COLUMNS = 10;
-	private static final int TOTAL_ROWS = 10;   //Last row has only one cell
+	private static final int TOTAL_COLUMNS = 9;
+	private static final int TOTAL_ROWS = 9;   //Last row has only one cell
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
+	public int numBombs = 10;
+	public int bombGen[] =new int[10];
+	public boolean minesOnField[][] = new boolean[TOTAL_COLUMNS][TOTAL_ROWS];
+	public String[][] nearBombs = new String[TOTAL_COLUMNS][TOTAL_ROWS];
+	
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
-	public MyPanel() {   //This is the constructor... this code runs first to initialize
+	
+	public MyPanel() {
+		//This is the constructor... this code runs first to initialize
+		
+		for (int i = 0; i< numBombs; i++){
+			Random rand = new Random();
+			int x = rand.nextInt(TOTAL_COLUMNS);
+			int y = rand.nextInt(TOTAL_ROWS);
+			
+			if( minesOnField [x][y] == false){
+				minesOnField[x][y] = true;
+			}
+			else{
+				i--;
+			}
+			
+		}
+		
+		
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
 		}
@@ -27,15 +50,20 @@ public class MyPanel extends JPanel {
 		if (TOTAL_ROWS + (new Random()).nextInt(1) < 3) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
-		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //Top row
-			colorArray[x][0] = Color.LIGHT_GRAY;
+		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //Top row ; add conditions for numGrid = colorArray
+			colorArray[x][0] = Color.WHITE;
+			nearBombs[x][0] = "";
+			
+			
 		}
 		for (int y = 0; y < TOTAL_ROWS; y++) {   //Left column
-			colorArray[0][y] = Color.LIGHT_GRAY;
+			colorArray[0][y] = Color.WHITE;
+			nearBombs[0][y] = "";
 		}
 		for (int x = 1; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 1; y < TOTAL_ROWS; y++) {
 				colorArray[x][y] = Color.WHITE;
+				nearBombs[x][y] = "";
 			}
 		}
 	}
@@ -57,12 +85,13 @@ public class MyPanel extends JPanel {
 
 		//Draw the grid minus the bottom row (which has only one cell)
 		//By default, the grid will be 10x10 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
+		
 		g.setColor(Color.BLACK);
-		for (int y = 0; y <= TOTAL_ROWS - 1; y++) {
+		for (int y = 0; y <= TOTAL_ROWS ; y++) {
 			g.drawLine(x1 + GRID_X, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)), x1 + GRID_X + ((INNER_CELL_SIZE + 1) * TOTAL_COLUMNS), y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)));
 		}
 		for (int x = 0; x <= TOTAL_COLUMNS; x++) {
-			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)));
+			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS )));
 		}
 
 		//Draw an additional cell at the bottom left
@@ -71,7 +100,7 @@ public class MyPanel extends JPanel {
 		//Paint cell colors
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				if ((x == 0) || (y != TOTAL_ROWS - 1)) {
+				if ((x == 0) || (y != TOTAL_ROWS )) {
 					Color c = colorArray[x][y];
 					g.setColor(c);
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
@@ -129,15 +158,8 @@ public class MyPanel extends JPanel {
 		}
 		return y;
 	}
-	public void CreateMines(){
-		Random rand = new Random();
-		for (int i =0; i <10; i++){
-			int x = rand.nextInt(9);
-			int y = rand.nextInt(9);
-			colorArray[x][y] = Color.BLACK;				
-			}
 
-		}
+	
 		
 		
 	}
