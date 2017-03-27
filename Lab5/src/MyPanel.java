@@ -17,29 +17,15 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
 	public int numBombs = 10;
-	public int bombGen[] =new int[10];
+	public  int bombGenX[] =new int[10];
+	public  int bombGenY[] = new int [10];
 	public boolean minesOnField[][] = new boolean[TOTAL_COLUMNS][TOTAL_ROWS];
 	public String[][] nearBombs = new String[TOTAL_COLUMNS][TOTAL_ROWS];
 	
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 	
 	public MyPanel() {
-		//This is the constructor... this code runs first to initialize
-		
-		for (int i = 0; i< numBombs; i++){
-			Random rand = new Random();
-			int x = rand.nextInt(TOTAL_COLUMNS);
-			int y = rand.nextInt(TOTAL_ROWS);
-			
-			if( minesOnField [x][y] == false){
-				minesOnField[x][y] = true;
-			}
-			else{
-				i--;
-			}
-			
-		}
-		
+		//This is the constructor... this code runs first to initialize	
 		
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
@@ -65,6 +51,25 @@ public class MyPanel extends JPanel {
 				colorArray[x][y] = Color.WHITE;
 				nearBombs[x][y] = "";
 			}
+			
+		}
+		for (int i = 0; i< numBombs; i++){
+			Random rand = new Random();
+			int x = rand.nextInt(TOTAL_COLUMNS);
+			int y = rand.nextInt(TOTAL_ROWS);
+			
+			if( minesOnField [x][y] == false){
+				minesOnField[x][y] = true;
+				
+			}
+			else{
+				i--;
+			}
+			bombGenX[i] = bombGenX[x];
+			bombGenY[i] = bombGenY[y];
+			colorArray[x][y] = Color.GREEN;
+			
+			
 		}
 	}
 	public void paintComponent(Graphics g) {
@@ -159,6 +164,8 @@ public class MyPanel extends JPanel {
 		return y;
 	}
 
+
+	
 	
 		
 		
