@@ -80,7 +80,7 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Do nothing
 					} else {
 						//Released the mouse button on the same cell where it was pressed
-						if ((gridX == MyPanel.bombGenX[x]) && (gridY == MyPanel.bombGenY[y])) {
+						if ((gridX == myPanel.bombGenX[x]) && (gridY == myPanel.bombGenY[y])) {
 							//On the bomb cell... do nothing
 //							JFrame gameOver = new JFrame("Game Over =(");
 //							gameOver.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
