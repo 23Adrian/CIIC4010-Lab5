@@ -100,13 +100,11 @@ public class MyMouseAdapter extends MouseAdapter {
 					} else {
 						//Released the mouse button on bomb
 						for (int i = 0; i <myPanel.numBombs ; i++){
-
-
-							int rx = i+1;
-							int lx = i-1;
-							int ty = i+1;
-							int by = i-1;
-							int nearBombs = 0;
+//							int rx = i+1;
+//							int lx = i-1;
+//							int ty = i+1;
+//							int by = i-1;
+//							int nearBombs = 0;
 							if( (gridX == myPanel.bombGenX[i]) && (gridY == myPanel.bombGenY[i])){
 
 								myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.blue;			
