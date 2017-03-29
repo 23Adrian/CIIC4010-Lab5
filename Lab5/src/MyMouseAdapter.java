@@ -6,13 +6,11 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class MyMouseAdapter extends MouseAdapter {
-	
-	
-	private Random generator = new Random();
 	public void mousePressed(MouseEvent e) {
-		
+
 		switch (e.getButton()) {
 		case 1:		//Left mouse button
 			Component c = e.getComponent();
@@ -38,7 +36,27 @@ public class MyMouseAdapter extends MouseAdapter {
 			break;
 		case 3:		//Right mouse button
 			//Do nothing
-			
+			Component r = e.getComponent();
+			while (!(r instanceof JFrame)) {
+				r = r.getParent();
+				if (r == null) {
+					return;
+				}
+			}
+			JFrame myFrameR = (JFrame) r;
+			MyPanel myPanelR = (MyPanel) myFrameR.getContentPane().getComponent(0);
+			Insets myInsetsR = myFrameR.getInsets();
+			int x1R = myInsetsR.left;
+			int y1R = myInsetsR.top;
+			e.translatePoint(-x1R, -y1R);
+			int xR = e.getX();
+			int yR = e.getY();
+			myPanelR.x = xR;
+			myPanelR.y = yR;
+			myPanelR.mouseDownGridX = myPanelR.getGridX(xR, yR);
+			myPanelR.mouseDownGridY = myPanelR.getGridY(xR, yR);
+			myPanelR.repaint();
+
 			break;
 		default:    //Some other button (2 = Middle mouse button, etc.)
 			//Do nothing
@@ -65,6 +83,7 @@ public class MyMouseAdapter extends MouseAdapter {
 			int y = e.getY();
 			myPanel.x = x;
 			myPanel.y = y;
+
 			int gridX = myPanel.getGridX(x, y);
 			int gridY = myPanel.getGridY(x, y);
 			if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
@@ -79,31 +98,108 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Released the mouse button on a different cell where it was pressed
 						//Do nothing
 					} else {
-						//Released the mouse button on the same cell where it was pressed
-						if ((gridX == myPanel.bombGenX[x]) && (gridY == myPanel.bombGenY[y])) {
-							//On the bomb cell... do nothing
-//							JFrame gameOver = new JFrame("Game Over =(");
-//							gameOver.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//							gameOver.setLocation(500, 200);
-//							gameOver.setSize(400, 200);
-//
-//							
-//							gameOver.setVisible(true);
-							
-						} else {
-							//On the grid other than on the left column and on the top row:
-							
-							
+						//Released the mouse button on bomb
+						for (int i = 0; i <myPanel.numBombs ; i++){
 
-							
-						}
+
+							int rx = i+1;
+							int lx = i-1;
+							int ty = i+1;
+							int by = i-1;
+							int nearBombs = 0;
+							if( (gridX == myPanel.bombGenX[i]) && (gridY == myPanel.bombGenY[i])){
+
+								myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.blue;			
+								JOptionPane.showMessageDialog(null, "GameOver =(");
+							}	
+							else{
+//								if (rx >=0 && by >=0 && myPanel.minesOnField[rx][by] == true) nearBombs++;
+//								if ( rx >= 0 && myPanel.minesOnField[rx][i] == true) nearBombs++;
+//								if (rx >=0 && ty < myPanel.numBombs && myPanel.minesOnField[lx][ty] == true) nearBombs++;
+//
+//								if ( by >= 0 && myPanel.minesOnField[i][by] == true) nearBombs++;	
+//								if ( ty < myPanel.numBombs && myPanel.minesOnField[i][ty] == true) nearBombs++;
+//								
+//								if ( by < myPanel.numBombs && myPanel.minesOnField[i][by] == true) nearBombs++; 
+
+
+								//	click in grid, not bomb
+
+							}	
+							myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.blue;
+							myPanel.repaint();
+						}    //put code here
+
+
 					}
+					//put code here
+
 				}
 			}
 			myPanel.repaint();
 			break;
 		case 3:		//Right mouse button
 			//Do nothing
+			Component r = e.getComponent();
+			while (!(r instanceof JFrame)) {
+				r = r.getParent();
+				if (r == null) {
+					return;
+				}
+			}
+			JFrame myFrameR = (JFrame) r;
+			MyPanel myPanelR = (MyPanel) myFrameR.getContentPane().getComponent(0);
+			Insets myInsetsR = myFrameR.getInsets();
+			int x1R = myInsetsR.left;
+			int y1R = myInsetsR.top;
+			e.translatePoint(-x1R, -y1R);
+			int xR = e.getX();
+			int yR = e.getY();
+			myPanelR.x = xR;
+			myPanelR.y = yR;
+			myPanelR.mouseDownGridX = myPanelR.getGridX(xR, yR);
+			myPanelR.mouseDownGridY = myPanelR.getGridY(xR, yR);
+			myPanelR.repaint();
+
+			int gridXR = myPanelR.getGridX(xR, yR);
+			int gridYR = myPanelR.getGridY(xR, yR);
+			Random generator = new Random();
+			if ((myPanelR.mouseDownGridX == -1) || (myPanelR.mouseDownGridY == -1)) {
+				//Had pressed outside
+				//Do nothing
+			} else {
+				if ((gridXR == -1) || (gridYR == -1)) {
+					//Is releasing outside
+					//Do nothing
+				} else {
+					if ((myPanelR.mouseDownGridX != gridXR) || (myPanelR.mouseDownGridY != gridYR)) {
+						//Released the mouse button on a different cell where it was pressed
+						//Do nothing
+					} else {
+						//Released the mouse button on bomb
+						Color newColor = null;
+						do { 
+							switch (generator.nextInt(2)){
+							case 0 :
+								newColor = Color.red;
+								break;
+							case 1 :
+								newColor = Color.white;
+								break;
+							}
+						}while ( myPanelR.colorArray[myPanelR.mouseDownGridX][myPanelR.mouseDownGridY].equals(newColor));
+						myPanelR.colorArray[myPanelR.mouseDownGridX][myPanelR.mouseDownGridY] = newColor;
+
+						myPanelR.repaint();
+					}//put code here
+
+
+
+					//put code here
+
+				}
+			}
+			myPanelR.repaint();
 			break;
 		default:    //Some other button (2 = Middle mouse button, etc.)
 			//Do nothing
