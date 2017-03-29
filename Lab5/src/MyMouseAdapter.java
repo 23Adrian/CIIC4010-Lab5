@@ -100,30 +100,25 @@ public class MyMouseAdapter extends MouseAdapter {
 					} else {
 						//Released the mouse button on bomb
 						for (int i = 0; i <myPanel.numBombs ; i++){
-//							int rx = i+1;
-//							int lx = i-1;
-//							int ty = i+1;
-//							int by = i-1;
-//							int nearBombs = 0;
+							int nearBombs = 0;
 							if( (gridX == myPanel.bombGenX[i]) && (gridY == myPanel.bombGenY[i])){
 
 								myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.blue;			
 								JOptionPane.showMessageDialog(null, "GameOver =(");
+								myPanel.repaint();
 							}	
 							else{
-//								if (rx >=0 && by >=0 && myPanel.minesOnField[rx][by] == true) nearBombs++;
-//								if ( rx >= 0 && myPanel.minesOnField[rx][i] == true) nearBombs++;
-//								if (rx >=0 && ty < myPanel.numBombs && myPanel.minesOnField[lx][ty] == true) nearBombs++;
-//
-//								if ( by >= 0 && myPanel.minesOnField[i][by] == true) nearBombs++;	
-//								if ( ty < myPanel.numBombs && myPanel.minesOnField[i][ty] == true) nearBombs++;
-//								
-//								if ( by < myPanel.numBombs && myPanel.minesOnField[i][by] == true) nearBombs++; 
-
-
-								//	click in grid, not bomb
-
+								if( gridX-1 == myPanel.bombGenX[i]) nearBombs++;
+								if ( gridX +1 == myPanel.bombGenX[i])nearBombs++;
+								if (gridY +1 == myPanel.bombGenY[i]) nearBombs++;
+								if (gridY - 1 == myPanel.bombGenY[i]) nearBombs++;
+								if ((gridY - 1 == myPanel.bombGenY[i]) && (gridX - 1 == myPanel.bombGenX[i])) nearBombs++;
+								if ((gridY + 1 == myPanel.bombGenY[i]) && (gridX + 1 == myPanel.bombGenX[i])) nearBombs++;
+								if ((gridY - 1 == myPanel.bombGenY[i]) && (gridX + 1 == myPanel.bombGenX[i])) nearBombs++;
+								if ((gridY - 1 == myPanel.bombGenY[i]) && (gridX - 1 == myPanel.bombGenX[i])) nearBombs++;
+								
 							}	
+							myPanel.nearBombs[gridX][gridY] = String.valueOf(nearBombs);
 							myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.blue;
 							myPanel.repaint();
 						}    //put code here

@@ -73,7 +73,7 @@ public class MyPanel extends JPanel {
 			}
 			bombGenX[i] = x;
 			bombGenY[i] = y;
-			colorArray[x][y] = Color.black;
+
 			
 			
 		}
