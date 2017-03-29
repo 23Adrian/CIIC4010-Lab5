@@ -103,10 +103,12 @@ public class MyMouseAdapter extends MouseAdapter {
 							int nearBombs = 0;
 							if( (gridX == myPanel.bombGenX[i]) && (gridY == myPanel.bombGenY[i])){
 
-								myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.blue;			
+								myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.black;			
 								JOptionPane.showMessageDialog(null, "GameOver =(");
 								myPanel.repaint();
 							}	
+							
+							
 							else{
 								if( gridX-1 == myPanel.bombGenX[i]) nearBombs++;
 								if ( gridX +1 == myPanel.bombGenX[i])nearBombs++;
@@ -119,7 +121,7 @@ public class MyMouseAdapter extends MouseAdapter {
 								
 							}	
 							myPanel.nearBombs[gridX][gridY] = String.valueOf(nearBombs);
-							myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.blue;
+							myPanel.colorArray[myPanel.bombGenX[i]][myPanel.bombGenY[i]] = Color.black;
 							myPanel.repaint();
 						}    //put code here
 
@@ -156,6 +158,7 @@ public class MyMouseAdapter extends MouseAdapter {
 
 			int gridXR = myPanelR.getGridX(xR, yR);
 			int gridYR = myPanelR.getGridY(xR, yR);
+			int flags = 0;
 			Random generator = new Random();
 			if ((myPanelR.mouseDownGridX == -1) || (myPanelR.mouseDownGridY == -1)) {
 				//Had pressed outside
@@ -170,6 +173,7 @@ public class MyMouseAdapter extends MouseAdapter {
 						//Do nothing
 					} else {
 						//Released the mouse button on bomb
+						flags++;
 						Color newColor = null;
 						do { 
 							switch (generator.nextInt(2)){
@@ -182,6 +186,7 @@ public class MyMouseAdapter extends MouseAdapter {
 							}
 						}while ( myPanelR.colorArray[myPanelR.mouseDownGridX][myPanelR.mouseDownGridY].equals(newColor));
 						myPanelR.colorArray[myPanelR.mouseDownGridX][myPanelR.mouseDownGridY] = newColor;
+						if (flags == myPanelR.numBombs) JOptionPane.showMessageDialog(null, "You Win");
 
 						myPanelR.repaint();
 					}//put code here
